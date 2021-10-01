@@ -73,7 +73,7 @@ public class Board extends JPanel implements MouseListener {
                 final Fractal selectedFractal = boardFrame.get().getFractal();
                 for (int i = 0; i < boardFrames.size(); i++) {
                     // Move the selected fractal to the center frame
-                    if (i == (int) Math.ceil(BOARD_FRAMES / 2.0)) {
+                    if (i == (int) (BOARD_FRAMES / 2.0)) {
                         boardFrames.get(i).setFractal(selectedFractal);
                     } else {
                         final Fractal mutatedFractal = selectedFractal.mutate();
