@@ -8,7 +8,7 @@ public class Main {
     public static final int FRAME_HEIGHT = 720;
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Aesthetic Fractals");
+        final JFrame frame = new JFrame("Aesthetic Fractals");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         final Board board = new Board(FRAME_WIDTH, FRAME_HEIGHT);

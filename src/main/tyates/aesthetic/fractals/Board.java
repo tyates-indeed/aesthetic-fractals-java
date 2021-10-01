@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Board extends JPanel implements MouseListener {
     public static final int BOARD_FRAMES = 9;
@@ -21,7 +22,7 @@ public class Board extends JPanel implements MouseListener {
         setPreferredSize(new Dimension(width, height));
 
         boardFrames = new ArrayList<>();
-        for(int i = 0; i < BOARD_FRAMES; i++) {
+        for (int i = 0; i < BOARD_FRAMES; i++) {
             final int x = (i % 3) * (width / 3);
             final int y = (i / 3) * (height / 3);
             boardFrames.add(new BoardFrame(x, y, width / 3, height / 3));
@@ -45,7 +46,7 @@ public class Board extends JPanel implements MouseListener {
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
         g.setColor(Color.WHITE);
-        for(final BoardFrame boardFrame : boardFrames) {
+        for (final BoardFrame boardFrame : boardFrames) {
             boardFrame.draw(g);
         }
     }
@@ -62,9 +63,14 @@ public class Board extends JPanel implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println(e.getButton());
         final Point point = getMousePosition(e);
-        System.out.println(point);
+
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            final Optional<BoardFrame> boardFrame = getBoardFrame(point);
+            boardFrame.ifPresent(System.out::println);
+        }
+
+        this.repaint();
     }
 
     @Override
@@ -79,6 +85,15 @@ public class Board extends JPanel implements MouseListener {
 
     private Point getMousePosition(final MouseEvent e) {
         final Point reportedPoint = e.getPoint();
-        return new Point((int)reportedPoint.getX() - offsetX, (int)reportedPoint.getY() - offsetY);
+        return new Point((int) reportedPoint.getX() - offsetX, (int) reportedPoint.getY() - offsetY);
+    }
+
+    private Optional<BoardFrame> getBoardFrame(final Point point) {
+        for (final BoardFrame boardFrame : boardFrames) {
+            if (boardFrame.containsPoint(point)) {
+                return Optional.of(boardFrame);
+            }
+        }
+        return Optional.empty();
     }
 }
