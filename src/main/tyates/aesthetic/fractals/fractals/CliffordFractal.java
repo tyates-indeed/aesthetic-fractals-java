@@ -9,17 +9,22 @@ public class CliffordFractal implements Fractal {
     private static final int CALCULATIONS = 1_000_000;
     private static final int FRACTAL_SCALE = 50;
 
-    private final Map<Point, Integer> drawPoints;
+    private final Map<Point, Integer> drawPoints = new HashMap<>();
     private final double a, b, c, d;
 
     public CliffordFractal() {
-        drawPoints = new HashMap<>();
-
         final Random random = new Random();
         a = (random.nextDouble() * 4.0) - 2.0;
         b = (random.nextDouble() * 4.0) - 2.0;
         c = (random.nextDouble() * 4.0) - 2.0;
         d = (random.nextDouble() * 4.0) - 2.0;
+    }
+
+    public CliffordFractal(final double a, final double b, final double c, final double d) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
     }
 
     @Override
@@ -54,5 +59,16 @@ public class CliffordFractal implements Fractal {
             g.setColor(color);
             g.drawLine(drawX, drawY, drawX, drawY);
         }
+    }
+
+    @Override
+    public Fractal mutate() {
+        final Random random = new Random();
+        final double a = this.a + (random.nextDouble() / 5.0 - 0.1);
+        final double b = this.b + (random.nextDouble() / 5.0 - 0.1);
+        final double c = this.c + (random.nextDouble() / 5.0 - 0.1);
+        final double d = this.d + (random.nextDouble() / 5.0 - 0.1);
+
+        return new CliffordFractal(a, b, c, d);
     }
 }

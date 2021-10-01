@@ -1,5 +1,7 @@
 package tyates.aesthetic.fractals.graphics;
 
+import tyates.aesthetic.fractals.fractals.Fractal;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -25,7 +27,7 @@ public class Board extends JPanel implements MouseListener {
         for (int i = 0; i < BOARD_FRAMES; i++) {
             final int x = (i % 3) * (width / 3);
             final int y = (i / 3) * (height / 3);
-            boardFrames.add(new BoardFrame(x, y, width / 3, height / 3));
+            boardFrames.add(new BoardFrame(i, x, y, width / 3, height / 3));
         }
     }
 
@@ -67,7 +69,22 @@ public class Board extends JPanel implements MouseListener {
 
         if (e.getButton() == MouseEvent.BUTTON1) {
             final Optional<BoardFrame> boardFrame = getBoardFrame(point);
-            boardFrame.ifPresent(System.out::println);
+            if (boardFrame.isPresent()) {
+                final Fractal selectedFractal = boardFrame.get().getFractal();
+                for (int i = 0; i < boardFrames.size(); i++) {
+                    // Move the selected fractal to the center frame
+                    if (i == (int) Math.ceil(BOARD_FRAMES / 2.0)) {
+                        boardFrames.get(i).setFractal(selectedFractal);
+                    } else {
+                        final Fractal mutatedFractal = selectedFractal.mutate();
+
+                        // TODO async generation
+                        mutatedFractal.calculate();
+
+                        boardFrames.get(i).setFractal(mutatedFractal);
+                    }
+                }
+            }
         }
 
         this.repaint();
