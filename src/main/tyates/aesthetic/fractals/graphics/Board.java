@@ -1,4 +1,4 @@
-package tyates.aesthetic.fractals;
+package tyates.aesthetic.fractals.graphics;
 
 import javax.swing.*;
 import java.awt.*;

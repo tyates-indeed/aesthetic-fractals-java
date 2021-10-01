@@ -1,5 +1,7 @@
 package tyates.aesthetic.fractals;
 
+import tyates.aesthetic.fractals.graphics.Board;
+
 import javax.swing.*;
 import java.awt.*;
 
