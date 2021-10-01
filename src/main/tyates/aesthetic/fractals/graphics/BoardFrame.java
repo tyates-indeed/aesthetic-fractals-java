@@ -21,11 +21,14 @@ public class BoardFrame {
     }
 
     public void draw(final Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+
         g.setColor(Color.WHITE);
         g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
         if (fractal != null) {
-            fractal.draw(g, rectangle.width / 2, rectangle.height / 2);
+            fractal.draw(g, rectangle.x + rectangle.width / 2, rectangle.y + rectangle.height / 2);
         }
     }
 

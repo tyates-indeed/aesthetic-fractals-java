@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class CliffordFractal implements Fractal {
-    private static final int CALCULATIONS = 100_000;
+    private static final int CALCULATIONS = 1_000_000;
     private static final int FRACTAL_SCALE = 50;
 
     private final Map<Point, Integer> drawPoints;
@@ -28,14 +28,14 @@ public class CliffordFractal implements Fractal {
         double x = 0.0;
         double y = 0.0;
 
-        for (int i=0; i < CALCULATIONS; i++) {
+        for (int i = 0; i < CALCULATIONS; i++) {
             final double newX = Math.sin(a * y) + c * Math.cos(a * x);
             final double newY = Math.sin(b * x) + d * Math.cos(b * y);
             x = newX;
             y = newY;
 
-            final int drawX = (int) (Math.round(newX) * FRACTAL_SCALE);
-            final int drawY = (int) (Math.round(newY) * FRACTAL_SCALE);
+            final int drawX = (int) (Math.round(newX * FRACTAL_SCALE));
+            final int drawY = (int) (Math.round(newY * FRACTAL_SCALE));
             final Point drawPoint = new Point(drawX, drawY);
 
             final int timesAlreadySeen = drawPoints.getOrDefault(drawPoint, 0);
