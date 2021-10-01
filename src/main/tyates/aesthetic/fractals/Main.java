@@ -11,7 +11,7 @@ public class Main {
         JFrame frame = new JFrame("Aesthetic Fractals");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        final Board board = new Board();
+        final Board board = new Board(FRAME_WIDTH, FRAME_HEIGHT);
         board.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         frame.getContentPane().add(board);
         frame.addMouseListener(board);

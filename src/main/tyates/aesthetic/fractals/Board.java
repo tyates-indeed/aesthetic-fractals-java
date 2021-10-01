@@ -4,10 +4,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Board extends JPanel implements MouseListener {
+    public static final int BOARD_FRAMES = 9;
+
+    private int width, height;
+
     private int offsetX = 0;
     private int offsetY = 0;
+    private final List<BoardFrame> boardFrames;
+
+    public Board(final int width, final int height) {
+        this.width = width;
+        this.height = height;
+
+        boardFrames = new ArrayList<>();
+        for(int i = 0; i < BOARD_FRAMES; i++) {
+            final int x = (i % 3) * (width / 3);
+            final int y = (i / 3) * (height / 3);
+            boardFrames.add(new BoardFrame(x, y, width / 3, height / 3));
+        }
+    }
 
     public void setMouseOffset(final int offsetX, final int offsetY) {
         this.offsetX = offsetX;
@@ -18,8 +37,17 @@ public class Board extends JPanel implements MouseListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(Color.BLUE);
-        g.fillRect(0, 0, 1000, 100);
+        drawBoard(g);
+    }
+
+    private void drawBoard(final Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+        g.setColor(Color.WHITE);
+        for(final BoardFrame boardFrame : boardFrames) {
+            boardFrame.draw(g);
+        }
     }
 
     @Override
