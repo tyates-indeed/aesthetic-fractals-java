@@ -11,7 +11,6 @@ public class Board extends JPanel implements MouseListener {
     public static final int BOARD_FRAMES = 9;
 
     private int width, height;
-
     private int offsetX = 0;
     private int offsetY = 0;
     private final List<BoardFrame> boardFrames;
@@ -19,6 +18,7 @@ public class Board extends JPanel implements MouseListener {
     public Board(final int width, final int height) {
         this.width = width;
         this.height = height;
+        setPreferredSize(new Dimension(width, height));
 
         boardFrames = new ArrayList<>();
         for(int i = 0; i < BOARD_FRAMES; i++) {
