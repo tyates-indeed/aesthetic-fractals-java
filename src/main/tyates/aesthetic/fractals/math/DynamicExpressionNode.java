@@ -9,7 +9,7 @@ public class DynamicExpressionNode {
     static final Set<String> BINARY_OPERATORS = Set.of("+", "-", "*", "/");
     static final Set<String> VARIABLES = Set.of("x", "y");
 
-    private final String value;
+    private String value;
     private DynamicExpressionNode parent;
     private DynamicExpressionNode left;
     private DynamicExpressionNode right;
@@ -59,8 +59,20 @@ public class DynamicExpressionNode {
         return UNARY_OPERATORS.contains(value) || BINARY_OPERATORS.contains(value);
     }
 
+    public boolean isUnaryOperator() {
+        return UNARY_OPERATORS.contains(value);
+    }
+
+    public boolean isBinaryOperator() {
+        return BINARY_OPERATORS.contains(value);
+    }
+
     public boolean isLeaf() {
         return left == null && right == null;
+    }
+
+    public boolean isConstant() {
+        return isLeaf() && !VARIABLES.contains(value);
     }
 
     public DynamicExpressionNode getLeft() {
@@ -73,6 +85,10 @@ public class DynamicExpressionNode {
 
     public String getValue() {
         return value;
+    }
+
+    public void setValue(final String value) {
+        this.value = value;
     }
 
     public double getNumericValue(final double x, final double y) {

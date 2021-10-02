@@ -26,6 +26,10 @@ public class DynamicExpression {
         return new DynamicExpressionNode("*", const2, unary1);
     }
 
+    public DynamicExpressionNode getRoot() {
+        return root;
+    }
+
     private double evaluate(final DynamicExpressionNode current, final double x, final double y) {
         if (current == null) {
             return 0.0;
@@ -57,5 +61,21 @@ public class DynamicExpression {
 
     public double evaluate(final double x, final double y) {
         return evaluate(root, x, y);
+    }
+
+    public DynamicExpression cloneExpression() {
+        return new DynamicExpression(cloneExpression(root));
+    }
+
+    public DynamicExpressionNode cloneExpression(final DynamicExpressionNode currentNode) {
+        if (currentNode.isLeaf()) {
+            return new DynamicExpressionNode(currentNode.getValue());
+        }
+
+        if (currentNode.isUnaryOperator()) {
+            return new DynamicExpressionNode(currentNode.getValue(), cloneExpression(currentNode.getLeft()));
+        }
+
+        return new DynamicExpressionNode(currentNode.getValue(), cloneExpression(currentNode.getLeft()), cloneExpression(currentNode.getRight()));
     }
 }

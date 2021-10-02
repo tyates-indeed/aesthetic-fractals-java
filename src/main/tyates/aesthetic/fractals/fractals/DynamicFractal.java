@@ -1,6 +1,7 @@
 package tyates.aesthetic.fractals.fractals;
 
 import tyates.aesthetic.fractals.math.DynamicExpression;
+import tyates.aesthetic.fractals.math.DynamicExpressionNode;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -17,6 +18,11 @@ public class DynamicFractal implements Fractal {
     public DynamicFractal() {
         xExpression = new DynamicExpression();
         yExpression = new DynamicExpression();
+    }
+
+    public DynamicFractal(final DynamicExpression xExpression, final DynamicExpression yExpression) {
+        this.xExpression = xExpression;
+        this.yExpression = yExpression;
     }
 
     @Override
@@ -55,7 +61,22 @@ public class DynamicFractal implements Fractal {
 
     @Override
     public Fractal mutate() {
-        // TODO actual mutation
-        return new DynamicFractal();
+        final DynamicFractal newFractal = (DynamicFractal) cloneFractal();
+        mutate(newFractal.xExpression.getRoot());
+        mutate(newFractal.yExpression.getRoot());
+        return newFractal;
+    }
+
+    private void mutate(final DynamicExpressionNode current) {
+        if (current.isConstant()) {
+            current.setValue(DynamicExpressionNode.getRandomConstant());
+        }
+    }
+
+    @Override
+    public Fractal cloneFractal() {
+        final DynamicExpression newX = xExpression.cloneExpression();
+        final DynamicExpression newY = yExpression.cloneExpression();
+        return new DynamicFractal(newX, newY);
     }
 }

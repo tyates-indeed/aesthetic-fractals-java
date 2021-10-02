@@ -71,4 +71,9 @@ public class CliffordFractal implements Fractal {
 
         return new CliffordFractal(a, b, c, d);
     }
+
+    @Override
+    public Fractal cloneFractal() {
+        return new CliffordFractal(a, b, c, d);
+    }
 }
