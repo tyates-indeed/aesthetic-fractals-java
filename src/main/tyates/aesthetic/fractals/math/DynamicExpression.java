@@ -8,7 +8,7 @@ public class DynamicExpression {
     private DynamicExpressionNode root;
 
     public DynamicExpression() {
-        root = new DynamicExpressionNode(getRandomBinaryOperator(), generateSubExpression(), generateSubExpression());
+        root = new DynamicExpressionNode("+", generateSubExpression(), generateSubExpression());
     }
 
     public DynamicExpression(final DynamicExpressionNode root) {
@@ -17,12 +17,12 @@ public class DynamicExpression {
 
     private DynamicExpressionNode generateSubExpression() {
         final Random random = new Random();
-        final DynamicExpressionNode const1 = new DynamicExpressionNode("" + random.nextDouble());
+        final DynamicExpressionNode const1 = new DynamicExpressionNode(getRandomConstant());
         final DynamicExpressionNode var1 = new DynamicExpressionNode(getRandomVariable());
         final DynamicExpressionNode mul1 = new DynamicExpressionNode("*", const1, var1);
 
         final DynamicExpressionNode unary1 = new DynamicExpressionNode(getRandomUnaryOperator(), mul1);
-        final DynamicExpressionNode const2 = new DynamicExpressionNode("" + random.nextDouble());
+        final DynamicExpressionNode const2 = new DynamicExpressionNode(getRandomConstant());
         return new DynamicExpressionNode("*", const2, unary1);
     }
 

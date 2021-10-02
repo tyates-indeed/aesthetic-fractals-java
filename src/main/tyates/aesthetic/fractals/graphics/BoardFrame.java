@@ -1,6 +1,6 @@
 package tyates.aesthetic.fractals.graphics;
 
-import tyates.aesthetic.fractals.fractals.CliffordFractal;
+import tyates.aesthetic.fractals.fractals.DynamicFractal;
 import tyates.aesthetic.fractals.fractals.Fractal;
 
 import java.awt.*;
@@ -10,7 +10,7 @@ public class BoardFrame {
     private final Rectangle rectangle;
 
     // TODO actual generation
-    private Fractal fractal = new CliffordFractal();
+    private Fractal fractal = new DynamicFractal();
 
     public BoardFrame(final int id, final int x, final int y, final int width, final int height) {
         this.id = id;

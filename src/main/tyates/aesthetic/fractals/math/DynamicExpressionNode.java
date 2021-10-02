@@ -1,7 +1,6 @@
 package tyates.aesthetic.fractals.math;
 
 
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Set;
 
@@ -107,5 +106,9 @@ public class DynamicExpressionNode {
     public static String getRandomBinaryOperator() {
         final String[] objects = BINARY_OPERATORS.toArray(new String[0]);
         return objects[new Random().nextInt(objects.length)];
+    }
+
+    public static String getRandomConstant() {
+        return Double.toString(new Random().nextDouble() * 4.0 - 2.0);
     }
 }
