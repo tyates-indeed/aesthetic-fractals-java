@@ -28,8 +28,7 @@ public class Board extends JPanel implements MouseListener {
         this.height = height;
         setPreferredSize(new Dimension(width, height));
 
-        // TODO better thread number
-        fractalThreadPool = Executors.newFixedThreadPool(9);
+        fractalThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         boardFrames = new ArrayList<>();
         for (int i = 0; i < BOARD_FRAMES; i++) {
