@@ -12,10 +12,10 @@ public class BoardFrame {
     // TODO actual generation
     private Fractal fractal = new DynamicFractal();
 
-    public BoardFrame(final int id, final int x, final int y, final int width, final int height) {
+    public BoardFrame(final int id, final int x, final int y, final int width, final int height, final Board board) {
         this.id = id;
         this.rectangle = new Rectangle(x, y, width, height);
-        fractal.calculate();
+        fractal.calculate(board);
     }
 
     public Fractal getFractal() {

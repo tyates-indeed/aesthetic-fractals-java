@@ -1,5 +1,7 @@
 package tyates.aesthetic.fractals.fractals;
 
+import tyates.aesthetic.fractals.graphics.Board;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +30,7 @@ public class CliffordFractal implements Fractal {
     }
 
     @Override
-    public void calculate() {
+    public void calculate(final Board board) {
         drawPoints.clear();
         double x = 0.0;
         double y = 0.0;
@@ -47,6 +49,8 @@ public class CliffordFractal implements Fractal {
             final int drawPointValue = Math.min(255, timesAlreadySeen + 1);
             drawPoints.put(drawPoint, drawPointValue);
         }
+
+        board.repaint();
     }
 
     @Override

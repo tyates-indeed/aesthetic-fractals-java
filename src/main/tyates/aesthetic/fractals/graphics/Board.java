@@ -9,6 +9,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Board extends JPanel implements MouseListener {
     public static final int BOARD_FRAMES = 9;
@@ -17,6 +20,8 @@ public class Board extends JPanel implements MouseListener {
     private int offsetX = 0;
     private int offsetY = 0;
     private final List<BoardFrame> boardFrames;
+
+    private final ExecutorService fractalThreadPool;
 
     public Board(final int width, final int height) {
         this.width = width;
@@ -27,8 +32,10 @@ public class Board extends JPanel implements MouseListener {
         for (int i = 0; i < BOARD_FRAMES; i++) {
             final int x = (i % 3) * (width / 3);
             final int y = (i / 3) * (height / 3);
-            boardFrames.add(new BoardFrame(i, x, y, width / 3, height / 3));
+            boardFrames.add(new BoardFrame(i, x, y, width / 3, height / 3, this));
         }
+
+        fractalThreadPool = Executors.newFixedThreadPool(9);
     }
 
     public void setMouseOffset(final int offsetX, final int offsetY) {
@@ -77,11 +84,10 @@ public class Board extends JPanel implements MouseListener {
                         boardFrames.get(i).setFractal(selectedFractal);
                     } else {
                         final Fractal mutatedFractal = selectedFractal.mutate();
-
-                        // TODO async generation
-                        mutatedFractal.calculate();
-
                         boardFrames.get(i).setFractal(mutatedFractal);
+
+                        final Board thisBoard = this;
+                        fractalThreadPool.submit(() -> mutatedFractal.calculate(thisBoard));
                     }
                 }
             }

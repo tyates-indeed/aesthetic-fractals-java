@@ -1,5 +1,6 @@
 package tyates.aesthetic.fractals.fractals;
 
+import tyates.aesthetic.fractals.graphics.Board;
 import tyates.aesthetic.fractals.math.DynamicExpression;
 import tyates.aesthetic.fractals.math.DynamicExpressionNode;
 
@@ -12,7 +13,7 @@ public class DynamicFractal implements Fractal {
     private static final int FRACTAL_SCALE = 100;
     private static final int FRACTAL_STEP = 5;
 
-    private final Map<Point, Integer> drawPoints = new HashMap<>();
+    private Map<Point, Integer> drawPoints = new HashMap<>();
     private final DynamicExpression xExpression, yExpression;
 
     public DynamicFractal() {
@@ -26,8 +27,8 @@ public class DynamicFractal implements Fractal {
     }
 
     @Override
-    public void calculate() {
-        drawPoints.clear();
+    public void calculate(final Board board) {
+        final Map<Point, Integer> newDrawPoints = new HashMap<>();
         double x = 0.0;
         double y = 0.0;
 
@@ -41,14 +42,23 @@ public class DynamicFractal implements Fractal {
             final int drawY = (int) (Math.round(newY * FRACTAL_SCALE));
             final Point drawPoint = new Point(drawX, drawY);
 
-            final int timesAlreadySeen = drawPoints.getOrDefault(drawPoint, 0);
+            final int timesAlreadySeen = newDrawPoints.getOrDefault(drawPoint, 0);
             final int drawPointValue = Math.min(255, timesAlreadySeen + FRACTAL_STEP);
-            drawPoints.put(drawPoint, drawPointValue);
+            newDrawPoints.put(drawPoint, drawPointValue);
         }
+
+        drawPoints = newDrawPoints;
+        board.repaint();
     }
 
     @Override
     public void draw(Graphics g, int offsetX, int offsetY) {
+        if (drawPoints.isEmpty()) {
+            // TODO center the drawn string
+            g.drawString("Generating...", offsetX, offsetY);
+            return;
+        }
+
         for (final Map.Entry<Point, Integer> entry : drawPoints.entrySet()) {
             final int drawX = entry.getKey().x + offsetX;
             final int drawY = entry.getKey().y + offsetY;
@@ -70,6 +80,13 @@ public class DynamicFractal implements Fractal {
     private void mutate(final DynamicExpressionNode current) {
         if (current.isConstant()) {
             current.setValue(DynamicExpressionNode.getRandomConstant());
+        }
+
+        if (current.getLeft() != null) {
+            mutate(current.getLeft());
+        }
+        if (current.getRight() != null) {
+            mutate(current.getRight());
         }
     }
 
