@@ -1,6 +1,5 @@
 package tyates.aesthetic.fractals.graphics;
 
-import tyates.aesthetic.fractals.fractals.DynamicFractal;
 import tyates.aesthetic.fractals.fractals.Fractal;
 
 import java.awt.*;
