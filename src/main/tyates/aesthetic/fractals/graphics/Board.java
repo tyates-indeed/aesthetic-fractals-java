@@ -1,5 +1,6 @@
 package tyates.aesthetic.fractals.graphics;
 
+import tyates.aesthetic.fractals.fractals.DynamicFractal;
 import tyates.aesthetic.fractals.fractals.Fractal;
 
 import javax.swing.*;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class Board extends JPanel implements MouseListener {
     public static final int BOARD_FRAMES = 9;
@@ -28,14 +28,21 @@ public class Board extends JPanel implements MouseListener {
         this.height = height;
         setPreferredSize(new Dimension(width, height));
 
+        // TODO better thread number
+        fractalThreadPool = Executors.newFixedThreadPool(9);
+
         boardFrames = new ArrayList<>();
         for (int i = 0; i < BOARD_FRAMES; i++) {
             final int x = (i % 3) * (width / 3);
             final int y = (i / 3) * (height / 3);
-            boardFrames.add(new BoardFrame(i, x, y, width / 3, height / 3, this));
+            // TODO better choice of which initial type of fractal
+            final Fractal initialFractal = new DynamicFractal();
+            boardFrames.add(new BoardFrame(i, x, y, width / 3, height / 3, initialFractal));
+
+            fractalThreadPool.submit(() -> initialFractal.calculate(this));
         }
 
-        fractalThreadPool = Executors.newFixedThreadPool(9);
+        this.repaint();
     }
 
     public void setMouseOffset(final int offsetX, final int offsetY) {
@@ -85,9 +92,7 @@ public class Board extends JPanel implements MouseListener {
                     } else {
                         final Fractal mutatedFractal = selectedFractal.mutate();
                         boardFrames.get(i).setFractal(mutatedFractal);
-
-                        final Board thisBoard = this;
-                        fractalThreadPool.submit(() -> mutatedFractal.calculate(thisBoard));
+                        fractalThreadPool.submit(() -> mutatedFractal.calculate(this));
                     }
                 }
             }
