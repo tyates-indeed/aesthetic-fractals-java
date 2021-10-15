@@ -79,7 +79,7 @@ public class DynamicFractal implements Fractal {
 
     private void mutate(final DynamicExpressionNode current) {
         if (current.isConstant()) {
-            current.setValue(DynamicExpressionNode.getRandomConstant());
+            current.setValue(DynamicExpressionNode.getMutatedConstant(current.getValue()));
         }
 
         if (current.getLeft() != null) {

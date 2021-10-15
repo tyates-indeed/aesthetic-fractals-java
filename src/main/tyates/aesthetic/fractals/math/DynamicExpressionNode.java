@@ -5,6 +5,8 @@ import java.util.Random;
 import java.util.Set;
 
 public class DynamicExpressionNode {
+    static final Random random = new Random();
+
     static final Set<String> UNARY_OPERATORS = Set.of("sin", "cos", "abs");
     static final Set<String> BINARY_OPERATORS = Set.of("+", "-", "*", "/");
     static final Set<String> VARIABLES = Set.of("x", "y");
@@ -125,6 +127,11 @@ public class DynamicExpressionNode {
     }
 
     public static String getRandomConstant() {
-        return Double.toString(new Random().nextDouble() * 4.0 - 2.0);
+        return Double.toString(random.nextDouble() * 4.0 - 2.0);
+    }
+
+    public static String getMutatedConstant(final String originalConstant) {
+        final double newConstant = Double.parseDouble(originalConstant) + (random.nextGaussian() / 10.0);
+        return Double.toString(newConstant);
     }
 }
